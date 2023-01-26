@@ -1,0 +1,318 @@
+# Mysql is case insensitive
+#SELECT statement is used to query a data base. It can retrieve rows from a designated column, given some criteria
+
+#FROM statements tell the computer where to get the data from, it is used with select code as we are always selecting something from something
+
+#In SQL * is used for all and everything which is a wild card 
+
+#WHERE Clause. it will allow us to set a condition upon which we will specify what part of the data we want to retrieve from the database
+#we cannot use WHERE with agregate conditions like count sum average. instead we will need to use HAVING
+SELECT 
+    *
+FROM
+    employees
+WHERE
+    first_name = 'Mark';
+
+#There are alot of operator that can be used with the WHERE clause exaple 
+
+#Operators
+#"AND OR IN NOT IN LIKE NOT LIKE BETWEEN AND EXISTS NOT EXISTS IS NULL IS NOT NULL COMPARISON OPERATORS ETC.
+
+#AND - allows you to loggically combine two statements in the condition code block eg Name and gender and it bust be placed rite after the first condition
+#And should be used with conditions set on different columns
+SELECT 
+    *
+FROM
+    employees
+WHERE
+    first_name = 'Mark' AND gender = 'm';
+
+#OR - The computer understand the condition as two options that applies and gives us a result
+#OR should be used with conditions set on same columns
+SELECT 
+    *
+FROM
+    employees
+WHERE
+    first_name = 'Kellie'
+        OR first_name = 'Aruna';
+
+#Operator Precedence
+#the logical order with which we must comply when we use operators in the same where block
+#an sql rule stating that in the execution of the query, the operator AND is applied first , while the operator OR is applied second regardless of the order in which we use these operators, SQL will always start reading the conditions arround the AND operator.
+#					AND>OR
+# if we open bracket( and close bracket) arround the condition, the computer understands it as a complete condition and runs it accordingly.
+#always verifiy if the system is giving us the data we desire and it is correct.
+SELECT 
+    *
+FROM
+    employees
+WHERE
+    gender = 'F'
+        AND (first_name = 'Kellie'
+        OR first_name = 'Aruna');
+ 
+#IN - the in operator allows SQL to return the names written in parentheses if they exist in our table. In is better because it increases effecency of the code.
+SELECT 
+    *
+FROM
+    employees
+WHERE
+    first_name IN ('Denis' , 'Elvis');
+ 
+#NOT IN - this operator is exactly opposite of the IN operator.
+SELECT 
+    *
+FROM
+    employees
+WHERE
+    first_name NOT IN ('John' , 'Mark', 'Jacob');
+
+#LIKE - this operator is used when we want to find patterns in the data with just a few letters. to use this we need to put the text in () and also use a % sign so that the coputer can find the correct line
+# % sign is a substitute for a sequence of characters for all letters that comes before the sign.
+# _ helps us to match a single character 
+SELECT 
+    *
+FROM
+    employees
+WHERE
+    first_name LIKE ('%mar_');
+    
+# Not LIKE - this is the exact opposite of LIKE which lets us exclude the results that contain the letters 
+SELECT 
+    *
+FROM
+    employees
+WHERE
+    first_name not LIKE ('%mar%');
+
+# Wildcard characters - %, _, *  are known as the wild card caracters  
+
+# BETWEEN - operator is always used with AND as the code will then have a start and end point to search between
+SELECT 
+    *
+FROM
+    EMPLOYEES
+WHERE
+    hire_date BETWEEN '1990-01-01' AND '2000-01-01';
+    
+# NOT BETWEEN -operator is always used with AND as the code will search before and  after the start and end point
+SELECT 
+    *
+FROM
+    EMPLOYEES
+WHERE
+    hire_date NOT BETWEEN '1990-01-01' AND '2000-01-01';
+
+# IS NOT NULL - Is used to extract values that are not null or blank
+SELECT 
+    *
+FROM
+    employees
+WHERE
+    emp_no IS NOT NULL;
+    
+# IS NULL - Is used to extract values that are null or blank
+SELECT 
+    *
+FROM
+    employees
+WHERE
+    first_name IS NULL;
+    
+# Other Comparision Operators :- = Equal to,>Greater than,>=greater than or equal to,<less than,<=less than or equal to.
+# <>, != these signs are for not equal to. these can be used with text and numbers
+SELECT 
+    *
+FROM
+    employees
+WHERE
+    hire_date >= '2000-01-01'
+        AND gender = 'F';
+
+#Select distinct - selects all distinct, different data values from a designated column. it removes any dupicates 
+SELECT DISTINCT
+    hire_date
+FROM
+    employees;
+
+#Aggregate functions - They are applied on multiple rows of a single column of a table and return an output of a single value.
+#they ignore null values unless told not to
+#usually used after the SELECT clause
+#* for anything and all can only be used with count and no other aggregate function 
+#COUNT() - counts the number of non - null records in a field.
+#SUM() - sums all the non - null values in a column.
+#MIN() - returns the minimum value from the entire list.
+#MAX() - returns the maximum value from the entire list .
+#AVG() - calculates the average of all non - null values belonging to a certain column of a table.
+				##Remember##
+                #We SELECT something 				## SELECT column_name(s)
+				#FROM certian table 				## FROM table_name
+                #WHERE certian condition are met	## WHERE conditions
+                #GROUP the results by a column		##GROUP BY column_names(s)
+                #ORDER them in a certian direction	##ORDER BY column_name(s)
+#Round is a numeric or math  function we can use to round up values and it can be applied to single values that aggregate functions return
+#Round(#,Decimal_places)
+SELECT 
+    ROUND(AVG(salary), 2)
+FROM
+    salaries;
+
+#COUNT() - counts the number of non - null records in a field.
+#it is frequently used in a combination with the reserved word 'DISTINCT'
+#there should be no whitespace to start parentheses after count() or the query wont work in sql
+#* Can be used to include null values in the result.
+
+SELECT 
+    COUNT(emp_no)
+FROM
+    employees;
+
+#COUNT(DISTINCT) - is supposed to deliver the number of different names found throughout the data table 
+#we need to pay special attention to the syntax distint as it will come after the open bracket and not after the select keyword
+#hence if we want to know how many diffrent names can be found in the "employees" table? 
+
+SELECT 
+    COUNT(distinct first_name)
+FROM
+    employees;
+    
+#ORDER BY - this clause is used when we want to specify the column that the data has to be ordered by. this can be used for numbers and text
+SELECT 
+    *
+FROM
+    employees
+ORDER BY first_name;
+
+#ORDER ASC - this will tell the computer to order the list by ascending order and has to be applied after the column name.
+SELECT 
+    *
+FROM
+    employees
+ORDER BY first_name ASC;
+
+# This clause can also be used to order by 2 or more conditions 
+SELECT 
+    *
+FROM
+    employees
+ORDER BY first_name, last_name ASC;
+
+#ORDER DESC - this will tell the computer to order the list by DESCENDING order and has to be applied after the column name.
+SELECT 
+    *
+FROM
+    employees
+ORDER BY first_name DESC;
+
+#GROUP BY - when working in sql, results can be grouped according to a specific field or fields. 
+# GROUP BY must be placed immediately after the WHERE conditions, if any, and just before the ORDER BY clause.
+
+SELECT 
+    first_name
+FROM
+    employees
+GROUP BY first_name;
+
+#By using group by we will only get distict values for that column as result
+
+#In most cases when we need an aggregate function we must add a group by clause in our query too
+#Order by can be used at the end to order the output
+SELECT 
+    first_name, COUNT(first_name)
+FROM
+    employees
+GROUP BY first_name
+ORDER BY first_name DESC;
+
+#ALIASES (AS) - this is used to rename a selection from our query 
+SELECT 
+    first_name, COUNT(first_name) AS name_count
+FROM
+    employees
+GROUP BY first_name
+ORDER BY first_name;
+
+#HAVING - refines the output from records that do not satisfy a certain condition. it is frequently implemented with GROUP BY
+#HAVING is like WHERE but applied to the GROUP BY block
+#After HAVING, we can have a condition with an aggregate function, while WHERE cannot use aggregate functions within its conditions
+#We cannot use a non - aggregated and aggregated function in the HAVING clause
+					##Remember##
+                #We SELECT something 				## SELECT column_name(s)
+				#FROM certian table 				## FROM table_name
+                #WHERE certian condition are met	## WHERE conditions
+                #GROUP the results by a column		##GROUP BY column_names(s)
+                #HAVING conditions					##HAVING conditions
+                #ORDER them in a certian direction	##ORDER BY column_name(s)
+SELECT 
+    first_name, COUNT(first_name) AS name_count
+FROM
+    employees
+GROUP BY first_name
+HAVING COUNT(first_name) > 250
+ORDER BY first_name;
+
+#WHERE VS HAVING - 
+#WHERE allows us to set conditions that refer to subsets of individual rows which is applied before re organizing the outpul into groups
+#Between the HAVING and WHERE clause we must use group by to group the results 
+#HAVING should be used with agregate functions like count average sum etc 
+
+SELECT 
+    first_name, COUNT(first_name) AS names_count
+FROM
+    employees
+WHERE
+    hire_date > '1999-01-01'
+GROUP BY first_name
+HAVING COUNT(first_name) < 200
+ORDER BY first_name DESC;
+
+#LIMIT - This clause is used at the end of a query to limit the number of rows seen in the result. 
+#there are 3 ways to use this one is from edit prefrences sql execute, Second is from the drop down on the editor and 3rd is to write it with the query. 
+					##Remember##
+                #We SELECT something 				## SELECT column_name(s)
+				#FROM certian table 				## FROM table_name
+                #WHERE certian condition are met	## WHERE conditions
+                #GROUP the results by a column		##GROUP BY column_names(s)
+                #HAVING conditions					##HAVING conditions
+                #ORDER them in a certian direction	##ORDER BY column_name(s)
+                #LIMIT the results viewed			##LIMIT Number
+SELECT 
+    *
+FROM
+    salaries
+ORDER BY emp_no DESC
+LIMIT 10;
+
+#JOINS
+#Joins are the sql tool that allows us to construct a relationship between objects
+#A join show a result set, containing field derived from two or more tables
+#We must find a related column from the two tables that contains the same type of data.
+#We will be free to add columns from these two tables to our output
+#the columns we use to relate tables must represent the same object. The tables we are considering need not to be logically adjacent
+#Relational schemas is a tool that will help us find a strategy for linking tables 
+#We usually use aliases in the code and while using it we do not need to use AS
+
+#INNER JOIN
+#INNER JOIN  can help us extract matching records in two subsets using the column that has the same data in each set and will leave out any non matching records
+#INNER JOIN extracts only records in which the values in the related columns match. Null values or values appearing in just one of the two tables and not apearing in the other are not displayed. Only non - null matching values are in play
+#It does not make a diffrence if we specify INNER JOIN or JOIN as long as the syntax is correct in the correct order SQL will understand the type of join 
+
+SELECT 
+    e.emp_no, e.first_name, e.last_name, e.hire_date, d.dept_no
+FROM
+    employees e
+        INNER JOIN
+    dept_manager d ON e.emp_no = d.emp_no
+ORDER BY e.emp_no;
+ 
+SELECT 
+    e.emp_no, e.first_name, e.last_name, e.hire_date, d.dept_no
+FROM
+    employees e
+        JOIN
+    dept_manager d ON e.emp_no = d.emp_no
+ORDER BY e.emp_no;
+
+#
